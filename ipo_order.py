@@ -2,6 +2,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome import service as fs
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.chrome.options import Options
 
 # 指定時間待機
 import time
@@ -20,6 +21,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
 CHROMEDRIVER = "C:\MyPrg\Python\chromedriver.exe"
+DISP_MODE = "OFF"
 USER_ID = "316-0389811"
 USER_PWD = "3r8mZYN5HX"
 ORD_PWD = "fAGgL9vWzJ"
@@ -170,7 +172,13 @@ def sbiIpoOrder():
 if __name__ == "__main__":
 
     chrome_service = fs.Service(executable_path=CHROMEDRIVER)
-    driver = webdriver.Chrome(service=chrome_service)
+
+    if DISP_MODE == "OFF":
+        options = Options()
+        options.add_argument('--headless')
+        driver = webdriver.Chrome(service=chrome_service, options=options)
+    else:
+        driver = webdriver.Chrome(service=chrome_service)
 
     sbiIpoOrder()
 
