@@ -21,7 +21,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
 CHROMEDRIVER = "C:\MyPrg\Python\chromedriver.exe"
-DISP_MODE = "OFF"
+DISP_MODE = "OFF"   # "ON" or "OFF"
 USER_ID = "316-0389811"
 USER_PWD = "3r8mZYN5HX"
 ORD_PWD = "fAGgL9vWzJ"
