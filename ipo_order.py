@@ -63,7 +63,7 @@ def sbiLogOut():
         sendIpoMail(-3)
         return
     tmp.click()
-    time.sleep(2)
+    time.sleep(3)
 
 #-----------------------------
 #SBI証券の口座でIPOのBB申込を行なう
@@ -84,7 +84,7 @@ def sbiIpoOrder():
     login = driver.find_element(by=By.NAME, value="ACT_login")
     login.click()
 
-    time.sleep(5)
+    time.sleep(7)
 
     # name属性で指定
     try:
@@ -103,9 +103,9 @@ def sbiIpoOrder():
 
     # IPOページに入る
     driver.find_element(by=By.LINK_TEXT, value="IPO・PO").click()
-    time.sleep(2)
+    time.sleep(3)
     driver.find_element(by=By.XPATH, value="//img[@alt='新規上場株式ブックビルディング / 購入意思表示']").click()
-    time.sleep(2)
+    time.sleep(3)
 
     # 申込できる銘柄をチェック
     while True:
@@ -115,7 +115,7 @@ def sbiIpoOrder():
             order_one = []
             print(f"ipo = {len(reqs)}")
             reqs[0].click()
-            time.sleep(2)
+            time.sleep(3)
 
             # ===== 個別の申し込み画面 =====
             # 銘柄名
@@ -154,17 +154,18 @@ def sbiIpoOrder():
 
             # name属性で申込確認ボタン指定・クリック
             driver.find_element(by=By.NAME, value="order_kakunin").click()
+            time.sleep(2)
 
             # ===== 申し込み確認画面 =====
             # name属性で申込ボタン指定・クリック
-            time.sleep(2)
             driver.find_element(by=By.NAME, value="order_btn").click()
+            time.sleep(2)
 
             # ===== 申し込み完了画面 =====
             # IPOトップへ戻る・クリック
-            time.sleep(2)
             orderList.append(order_one)
             driver.find_element(by=By.XPATH, value="//a[contains(text(),'購入意思表示画面へ戻る')]").click()
+            time.sleep(3)
         else:
             break
     sendIpoMail(0)
