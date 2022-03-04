@@ -28,6 +28,7 @@ ORD_PWD = "fAGgL9vWzJ"
 MAIL_ADR = 'mtake88@gmail.com'
 MAIL_PWD = 'jnfzzdwkghwmrgkm'
 
+RETRY = 3
 orderList = []  # 注文内容をメールで送信
 
 #-----------------------------
@@ -63,7 +64,7 @@ def sbiLogOut():
         sendIpoMail(-3)
         return
     tmp.click()
-    time.sleep(3)
+    time.sleep(2)
 
 #-----------------------------
 #SBI証券の口座でIPOのBB申込を行なう
@@ -71,6 +72,7 @@ def sbiLogOut():
 def sbiIpoOrder():
     # サイトを開く
     driver.get("https://www.sbisec.co.jp/ETGate")
+    time.sleep(3)
 
     # ユーザIDを入力
     userID = driver.find_element(by=By.NAME, value="user_id")
@@ -84,7 +86,7 @@ def sbiIpoOrder():
     login = driver.find_element(by=By.NAME, value="ACT_login")
     login.click()
 
-    time.sleep(7)
+    time.sleep(3)
 
     # name属性で指定
     try:
@@ -93,10 +95,10 @@ def sbiIpoOrder():
     except NoSuchElementException:
         tmp = driver.find_elements(by=By.XPATH, value="//b[contains(text(),'重要なお知らせ')]")
         if len(tmp) >= 1:
-            sendIpoMail(-1)
+            ii = -1
         else:
-            sendIpoMail(-2)
-        return
+            ii = -2
+        return ii
 
     money = int(moneyTag.text.replace(",", ""))
     print(money)
@@ -168,7 +170,7 @@ def sbiIpoOrder():
             time.sleep(3)
         else:
             break
-    sendIpoMail(0)
+    return 0
 
 if __name__ == "__main__":
 
@@ -181,9 +183,14 @@ if __name__ == "__main__":
     else:
         driver = webdriver.Chrome(service=chrome_service)
 
-    sbiIpoOrder()
+    for retry in range(RETRY):
+        ret = sbiIpoOrder()
+        sbiLogOut()
+        if ret == 0:
+            break
 
-    sbiLogOut()
+    sendIpoMail(ret)
+
     driver.quit()
 
     print(orderList)
