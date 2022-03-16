@@ -21,7 +21,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
 CHROMEDRIVER = "C:\MyPrg\Python\chromedriver.exe"
-DISP_MODE = "OFF"   # "ON" or "OFF"
+DISP_MODE = "ON"   # "ON" or "OFF"
 USER_ID = "316-0389811"
 USER_PWD = "3r8mZYN5HX"
 ORD_PWD = "fAGgL9vWzJ"
@@ -128,9 +128,15 @@ def sbiIpoOrder():
 
             kari_tag = driver.find_element(by=By.XPATH,
                                            value="/html/body/table/tbody/tr/td/table[1]/tbody/tr/td/table[1]/tbody/tr[1]/td/form/table[5]/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/div")
-            ss = kari_tag.text.split(' ')
-            kari = int(ss[-2].replace(",", ""))
-            # print(kari)
+
+            if 'いずれか' in kari_tag.text :
+                ss = kari_tag.text.split('.')
+                kari = int(ss[0].replace(",", ""))
+
+            else:
+                ss = kari_tag.text.split(' ')
+                kari = int(ss[-2].replace(",", ""))
+                # print(kari)
             order_one.append(kari)
 
             unit_tag = driver.find_element(by=By.XPATH, value="//td[contains(text(),'売買単位')]")
