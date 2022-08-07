@@ -95,7 +95,7 @@ def sbiIpoOrder():
     except NoSuchElementException:
         tmp = driver.find_elements(by=By.XPATH, value="//b[contains(text(),'重要なお知らせ')]")
         if len(tmp) >= 1:
-            ii = -1
+            ii = 0
         else:
             ii = -2
         return ii
@@ -106,7 +106,12 @@ def sbiIpoOrder():
     # IPOページに入る
     driver.find_element(by=By.LINK_TEXT, value="IPO・PO").click()
     time.sleep(3)
-    driver.find_element(by=By.XPATH, value="//img[@alt='新規上場株式ブックビルディング / 購入意思表示']").click()
+
+    try:
+        driver.find_element(by=By.XPATH, value="//img[@alt='新規上場株式ブックビルディング / 購入意思表示']").click()
+    except NoSuchElementException:
+        ii = 0
+        return ii
     time.sleep(3)
 
     # 申込できる銘柄をチェック
