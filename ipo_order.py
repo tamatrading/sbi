@@ -100,6 +100,7 @@ def sbiIpoOrder():
             ii = -2
         return ii
 
+
     money = int(moneyTag.text.replace(",", ""))
     print(money)
 
