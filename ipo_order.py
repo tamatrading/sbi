@@ -95,7 +95,7 @@ def sbiIpoOrder():
     except NoSuchElementException:
         tmp = driver.find_elements(by=By.XPATH, value="//b[contains(text(),'重要なお知らせ')]")
         if len(tmp) >= 1:
-            ii = 0
+            ii = -1
         else:
             ii = -2
         return ii
@@ -195,7 +195,7 @@ if __name__ == "__main__":
     for retry in range(RETRY):
         ret = sbiIpoOrder()
         sbiLogOut()
-        if ret == 0:
+        if (ret == 0) or (ret == -1):
             break
 
     sendIpoMail(ret)
