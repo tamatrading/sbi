@@ -1,0 +1,1 @@
+pyinstaller --onefile --noconsole --icon=SBI_IPO.ico ipo_order.py --name=sbi_ipo.exe

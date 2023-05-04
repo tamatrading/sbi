@@ -6,8 +6,10 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 
 # 指定時間待機
+import datetime
 import time
 import re
+import sys
 
 #gmail
 from gmail import sendGmail
@@ -22,14 +24,52 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
 DISP_MODE = "ON"   # "ON" or "OFF"
-USER_ID = "316-0389811"
-USER_PWD = "3r8mZYN5HX"
-ORD_PWD = "fAGgL9vWzJ"
-MAIL_ADR = 'mtake88@gmail.com'
-MAIL_PWD = 'jnfzzdwkghwmrgkm'
+
+USER_ID = ""
+USER_PWD = ""
+ORD_PWD = ""
+MAIL_ADR = ""
+MAIL_PWD = ""
 
 RETRY = 3
 orderList = []  # 注文内容をメールで送信
+
+import os
+
+def read_data(file_path):
+
+    if not os.path.exists(file_path):
+        now = datetime.datetime.now()  # 現在時刻の取得
+        today = now.strftime('%Y年%m月%d日 %H:%M:%S')  # 現在時刻を年月曜日で表示
+
+        write_to_result_file(f"--- {today} ---\n\nError: 'information.txt' ファイルがありません.\n")
+        print("Error: 'information.txt' ファイルがありません.")
+        sys.exit()
+
+    with open(file_path, 'r', encoding='utf-8') as file:
+        data = file.readlines()
+
+    variables = {}
+    for line in data:
+        if '：' in line:
+            key, value = line.strip().split('：')
+            variables[key] = value
+
+    USER_ID = variables.get('ユーザーネーム', '')
+    USER_PWD = variables.get('ログインパスワード', '')
+    ORD_PWD = variables.get('発注パスワード', '')
+    MAIL_ADR = variables.get('メールアドレス', '')
+    MAIL_PWD = variables.get('メールパスワード', '')
+
+    return USER_ID, USER_PWD, ORD_PWD, MAIL_ADR, MAIL_PWD
+
+
+# -----------------------------
+# result.txtに指定された文字列を書く。ファイルがない場合には作成し、すでにある場合は上書きする。
+# -----------------------------
+def write_to_result_file(text: str):
+    with open("result.txt", "w") as file:
+        file.write(text)
 
 #-----------------------------
 # gmail送信
@@ -51,7 +91,14 @@ def sendIpoMail(type):
             hon += f"{ll[0]}  ■単価：{ll[1]} ■株数：{ll[2]}\n"
     else:
         return
-    sendGmail(MAIL_ADR, MAIL_ADR, MAIL_ADR, MAIL_PWD, "【SBI IPO】"+sub, hon)
+
+    if MAIL_ADR !="" and MAIL_PWD != "":
+        sendGmail(MAIL_ADR, MAIL_ADR, MAIL_ADR, MAIL_PWD, "【SBI IPO】"+sub, hon)
+
+    now = datetime.datetime.now()  # 現在時刻の取得
+    today = now.strftime('%Y年%m月%d日 %H:%M:%S')  # 現在時刻を年月曜日で表示
+
+    write_to_result_file(f"--- {today} ---\n\n■{sub}\n\n{hon}")
 
 #-----------------------------
 #ログアウトする
@@ -70,6 +117,17 @@ def sbiLogOut():
 #SBI証券の口座でIPOのBB申込を行なう
 #-----------------------------
 def sbiIpoOrder():
+    # ファイルのパスを引数として関数を呼び出す
+    file_name = 'information.txt'
+    file_path = os.path.join(os.getcwd(), file_name)
+    USER_ID, USER_PWD, ORD_PWD, MAIL_ADR, MAIL_PWD = read_data(file_path)
+
+    print("ユーザーネーム:", USER_ID)
+    print("ログインパスワード:", USER_PWD)
+    print("発注パスワード:", ORD_PWD)
+    print("メールアドレス:", MAIL_ADR)
+    print("メールパスワード:", MAIL_PWD)
+
     # サイトを開く
     driver.get("https://www.sbisec.co.jp/ETGate")
     time.sleep(3)
