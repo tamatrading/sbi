@@ -75,6 +75,8 @@ def write_to_result_file(text: str):
 # gmail送信
 #-----------------------------
 def sendIpoMail(type):
+    global MAIL_ADR, MAIL_PWD
+
     if type == -1:      #重要なお知らせ
         sub = "重要なお知らせがあります"
         hon = "重要なお知らせがあります。\nログインして内容をご確認下さい\n（IPO申込は行なっていません）"
@@ -117,6 +119,7 @@ def sbiLogOut():
 #SBI証券の口座でIPOのBB申込を行なう
 #-----------------------------
 def sbiIpoOrder():
+    global USER_ID, USER_PWD, ORD_PWD, MAIL_ADR, MAIL_PWD
     # ファイルのパスを引数として関数を呼び出す
     file_name = 'information.txt'
     file_path = os.path.join(os.getcwd(), file_name)
