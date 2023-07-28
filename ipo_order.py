@@ -1,4 +1,5 @@
 #selenium起動
+import requests
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException
@@ -252,7 +253,15 @@ if __name__ == "__main__":
         options.add_argument('--headless')
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     else:
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        try:
+            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+            # 自動でPCのChromeと同じバージョンのdriverをインストールする処理
+            # self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        except:
+            # 例外発生時、配布されているもののうち最新のdriverをインストールする処理
+            res = requests.get('https://chromedriver.storage.googleapis.com/LATEST_RELEASE')
+            options = Options()
+            driver = webdriver.Chrome(service=Service(ChromeDriverManager(res.text).install()), options=options)
 
     for retry in range(RETRY):
         ret = sbiIpoOrder()
