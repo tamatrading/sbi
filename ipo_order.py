@@ -114,7 +114,7 @@ def sbiLogOut():
         sendIpoMail(-3)
         return
     tmp.click()
-    time.sleep(2)
+    time.sleep(5)
 
 #-----------------------------
 #SBI証券の口座でIPOのBB申込を行なう
@@ -134,7 +134,7 @@ def sbiIpoOrder():
 
     # サイトを開く
     driver.get("https://www.sbisec.co.jp/ETGate")
-    time.sleep(3)
+    time.sleep(5)
 
     # ユーザIDを入力
     userID = driver.find_element(by=By.NAME, value="user_id")
@@ -148,7 +148,7 @@ def sbiIpoOrder():
     login = driver.find_element(by=By.NAME, value="ACT_login")
     login.click()
 
-    time.sleep(3)
+    time.sleep(5)
 
     # name属性で指定
     try:
@@ -168,14 +168,14 @@ def sbiIpoOrder():
 
     # IPOページに入る
     driver.find_element(by=By.LINK_TEXT, value="IPO・PO").click()
-    time.sleep(3)
+    time.sleep(5)
 
     try:
         driver.find_element(by=By.XPATH, value="//img[@alt='新規上場株式ブックビルディング / 購入意思表示']").click()
     except NoSuchElementException:
         ii = 0
         return ii
-    time.sleep(3)
+    time.sleep(5)
 
     # 申込できる銘柄をチェック
     while True:
@@ -185,7 +185,7 @@ def sbiIpoOrder():
             order_one = []
             print(f"ipo = {len(reqs)}")
             reqs[0].click()
-            time.sleep(3)
+            time.sleep(5)
 
             # ===== 個別の申し込み画面 =====
             # 銘柄名
@@ -230,18 +230,18 @@ def sbiIpoOrder():
 
             # name属性で申込確認ボタン指定・クリック
             driver.find_element(by=By.NAME, value="order_kakunin").click()
-            time.sleep(2)
+            time.sleep(5)
 
             # ===== 申し込み確認画面 =====
             # name属性で申込ボタン指定・クリック
             driver.find_element(by=By.NAME, value="order_btn").click()
-            time.sleep(2)
+            time.sleep(5)
 
             # ===== 申し込み完了画面 =====
             # IPOトップへ戻る・クリック
             orderList.append(order_one)
             driver.find_element(by=By.XPATH, value="//a[contains(text(),'購入意思表示画面へ戻る')]").click()
-            time.sleep(3)
+            time.sleep(5)
         else:
             break
     return 0
