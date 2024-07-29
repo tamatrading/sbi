@@ -153,7 +153,9 @@ def sbiIpoOrder():
     # name属性で指定
     try:
         moneyTag = driver.find_element(by=By.XPATH,
-                                       value="/html/body/table/tbody/tr[1]/td[1]/div[2]/div[1]/div/div/div/div/table/tbody/tr/td[1]/span")
+                                       value="/html/body/table/tbody/tr[1]/td[1]/div[1]/div/div[2]/div[1]/div/div/div/span/p")
+#        moneyTag = driver.find_element(by=By.XPATH,
+#                                       value="/html/body/table/tbody/tr[1]/td[1]/div[2]/div[1]/div/div/div/div/table/tbody/tr/td[1]/span")
     except NoSuchElementException:
         tmp = driver.find_elements(by=By.XPATH, value="//b[contains(text(),'重要なお知らせ')]")
         if len(tmp) >= 1:
@@ -163,7 +165,7 @@ def sbiIpoOrder():
         return ii
 
 
-    money = int(moneyTag.text.replace(",", ""))
+    money = int(moneyTag.text.replace(",", "").replace("円", ""))
     print(money)
 
     # IPOページに入る
