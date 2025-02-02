@@ -1,11 +1,11 @@
 #selenium起動
 import requests
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+import webdriver_manager.chrome
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-
+from webdriver_manager.chrome import ChromeDriverManager
 # 指定時間待機
 import datetime
 import time
@@ -32,7 +32,7 @@ ORD_PWD = ""
 MAIL_ADR = ""
 MAIL_PWD = ""
 
-RETRY = 3
+RETRY = 1
 orderList = []  # 注文内容をメールで送信
 
 import os
@@ -153,7 +153,9 @@ def sbiIpoOrder():
     # name属性で指定
     try:
         moneyTag = driver.find_element(by=By.XPATH,
-                                       value="/html/body/table/tbody/tr[1]/td[1]/div[1]/div/div[2]/div[1]/div/div/div/span/p")
+                                       value="/html/body/table/tbody/tr[1]/td[1]/div[1]/div/div[2]/div/div[1]/div/div[2]/div[2]/span/p/span[1]")
+#        moneyTag = driver.find_element(by=By.XPATH,
+#                                       value="/html/body/table/tbody/tr[1]/td[1]/div[1]/div/div[2]/div[1]/div/div/div/span/p")
 #        moneyTag = driver.find_element(by=By.XPATH,
 #                                       value="/html/body/table/tbody/tr[1]/td[1]/div[2]/div[1]/div/div/div/div/table/tbody/tr/td[1]/span")
     except NoSuchElementException:
